@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace Calculater
+﻿namespace Calculater
 {
     internal class Program
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Calculater.Test();
         }
     }
 }
