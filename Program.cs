@@ -7,17 +7,20 @@ namespace Calculater
     {
         public static void Main(string[] args)
         {
+            var calc = new Calculater();
+
             using (var file = new StreamWriter("output.txt"))
             {
                 foreach (var expression in File.ReadLines("input.txt"))
                 {
-                    var calc = new Calculater();
                     var result = calc.Calculate(expression);
                     file.WriteLine(result);
-                    
+
                     Console.WriteLine($"{expression}\t= {result}");
                 }
             }
+
+            calc.Close();
         }
     }
 }

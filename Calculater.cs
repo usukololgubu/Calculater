@@ -16,16 +16,13 @@ namespace Calculater
         private AutomationElement StandardOperators => _mainGroup.FindFirstChildrenById("StandardOperators");
         private AutomationElement NumberPad => _mainGroup.FindFirstChildrenById("NumberPad");
 
-        public Calculater(bool runCalc = false)
+        public Calculater()
         {
-            if (runCalc)
-            {
-                var calcProcess = System.Diagnostics.Process.Start("calc.exe");
-                if (calcProcess == null) throw new Exception("Cannot start 'calc.exe'");
+            var calcProcess = System.Diagnostics.Process.Start("calc.exe");
+            if (calcProcess == null) throw new Exception("Cannot start 'calc.exe'");
 
-                calcProcess.WaitForInputIdle();
-                Thread.Sleep(100); // wait a bit to be sure that Calculator is started
-            }
+            calcProcess.WaitForInputIdle();
+            Thread.Sleep(500); // wait a bit to be sure that Calculator is started
 
             Init();
             ValidateMode();
@@ -55,17 +52,11 @@ namespace Calculater
             return Evaluate(current);
         }
 
-        public void Input(char character)
+        public void Close()
         {
-            if (!_controlsMap.ContainsKey(character)) throw new NotImplementedException();
-
-            _controlsMap[character]();
-        }
-
-        public double GetCurrentResults()
-        {
-            var calcResults = _mainGroup.FindFirstChildrenById("CalculatorResults");
-            return double.Parse(calcResults.Current.Name.Substring("Display is ".Length));
+            var titleBar = _mainWindow?.FindFirstChildrenById("TitleBar");
+            var closeButton = titleBar?.FindFirstChildrenById("Close");
+            closeButton?.Click();
         }
 
         private void Init()
@@ -125,6 +116,19 @@ namespace Calculater
             Input('=');
 
             return GetCurrentResults();
+        }
+
+        private void Input(char character)
+        {
+            if (!_controlsMap.ContainsKey(character)) throw new NotImplementedException();
+
+            _controlsMap[character]();
+        }
+
+        private double GetCurrentResults()
+        {
+            var calcResults = _mainGroup.FindFirstChildrenById("CalculatorResults");
+            return double.Parse(calcResults.Current.Name.Substring("Display is ".Length));
         }
     }
 }
