@@ -31,6 +31,30 @@ namespace Calculater
             ValidateMode();
         }
 
+        public double Calculate(string expression)
+        {
+            var stack = new Stack<string>();
+            var current = "";
+            foreach (var c in expression)
+            {
+                switch (c)
+                {
+                    case '(':
+                        stack.Push(current);
+                        current = "";
+                        break;
+                    case ')':
+                        current = stack.Pop() + Evaluate(current);
+                        break;
+                    default:
+                        current += c;
+                        break;
+                }
+            }
+
+            return Evaluate(current);
+        }
+
         public void Input(char character)
         {
             if (!_controlsMap.ContainsKey(character)) throw new NotImplementedException();
@@ -89,6 +113,18 @@ namespace Calculater
             // TODO: Set Standard mode automatically
             // TODO: Check if this value is localizable
             if (!mode.Contains("Standard")) throw new Exception("Mode must be 'Standard'");
+        }
+
+        private double Evaluate(string characters)
+        {
+            foreach (var character in characters)
+            {
+                Input(character);
+            }
+
+            Input('=');
+
+            return GetCurrentResults();
         }
     }
 }
