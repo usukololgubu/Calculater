@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Calculater
 {
@@ -6,7 +7,14 @@ namespace Calculater
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            var expression = "12/34*56-78+9=";
+            var calc = new Calculater();
+            foreach (var c in expression)
+            {
+                calc.Input(c);
+            }
+
+            Console.WriteLine($"{expression}{calc.GetCurrentResults()}");
         }
     }
 }
