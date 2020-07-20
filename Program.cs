@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.IO;
 
 namespace Calculater
 {
@@ -7,11 +7,17 @@ namespace Calculater
     {
         public static void Main(string[] args)
         {
-            var expression = "20/(10*(4-2))";
-            var calc = new Calculater();
-            calc.Calculate(expression);
-
-            Console.WriteLine($"{expression}{calc.GetCurrentResults()}");
+            using (var file = new StreamWriter("output.txt"))
+            {
+                foreach (var expression in File.ReadLines("input.txt"))
+                {
+                    var calc = new Calculater();
+                    var result = calc.Calculate(expression);
+                    file.WriteLine(result);
+                    
+                    Console.WriteLine($"{expression}\t= {result}");
+                }
+            }
         }
     }
 }
