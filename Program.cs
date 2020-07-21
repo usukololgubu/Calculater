@@ -16,7 +16,7 @@ namespace Calculater
                     var result = calc.Calculate(expression);
                     file.WriteLine(result);
 
-                    Console.WriteLine($"{expression}\t= {result}");
+                    Console.WriteLine($"{expression,-20} = {result}");
                 }
             }
 
