@@ -15,6 +15,7 @@ namespace Calculater
 
         private AutomationElement StandardOperators => _mainGroup.FindFirstChildrenById("StandardOperators");
         private AutomationElement NumberPad => _mainGroup.FindFirstChildrenById("NumberPad");
+        private AutomationElement DisplayControls => _mainGroup.FindFirstChildrenById("DisplayControls");
 
         public Calculater()
         {
@@ -74,6 +75,8 @@ namespace Calculater
 
             _controlsMap = new Dictionary<char, Action>
             {
+                {'C', DisplayControls.FindFirstChildrenById("clearButton").Click},
+
                 {'/', StandardOperators.FindFirstChildrenById("divideButton").Click},
                 {'*', StandardOperators.FindFirstChildrenById("multiplyButton").Click},
                 {'-', StandardOperators.FindFirstChildrenById("minusButton").Click},
@@ -108,6 +111,8 @@ namespace Calculater
 
         private double Evaluate(string characters)
         {
+            Input('C'); // Clear previous operation
+
             foreach (var character in characters)
             {
                 Input(character);
