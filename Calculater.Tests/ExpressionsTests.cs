@@ -1,9 +1,9 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Calculater.Tests
 {
     [TestFixture]
-    public class CalculaterTests
+    public class ExpressionsTests
     {
         private Calculater _calculater;
 
