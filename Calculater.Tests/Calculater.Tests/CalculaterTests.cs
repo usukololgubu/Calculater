@@ -3,7 +3,7 @@ using NUnit.Framework;
 namespace Calculater.Tests
 {
     [TestFixture]
-    public class Tests
+    public class CalculaterTests
     {
         private Calculater _calculater;
 
