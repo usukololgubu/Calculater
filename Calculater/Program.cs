@@ -13,7 +13,7 @@ namespace Calculater
             {
                 foreach (var expression in File.ReadLines("input.txt"))
                 {
-                    var result = calc.Calculate(expression);
+                    var result = ExpressionEvaluator.Evaluate(expression, calc.Calculate);
                     file.WriteLine(result);
 
                     Console.WriteLine($"{expression,-20} = {result}");

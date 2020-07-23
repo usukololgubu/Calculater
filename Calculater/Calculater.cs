@@ -5,6 +5,9 @@ using System.Windows.Automation;
 
 namespace Calculater
 {
+    /// <summary>
+    /// A headless wrapper for a Windows calculator. Only standard mode is used.
+    /// </summary>
     public class Calculater
     {
         private AutomationElement _mainWindow; // Main Calculator window
@@ -29,28 +32,18 @@ namespace Calculater
             ValidateMode();
         }
 
-        public double Calculate(string expression)
+        public virtual double Calculate(string expression)
         {
-            var stack = new Stack<string>();
-            var current = "";
-            foreach (var c in expression)
+            Input('C'); // Clear previous operation
+
+            foreach (var character in expression)
             {
-                switch (c)
-                {
-                    case '(':
-                        stack.Push(current);
-                        current = "";
-                        break;
-                    case ')':
-                        current = stack.Pop() + Evaluate(current);
-                        break;
-                    default:
-                        current += c;
-                        break;
-                }
+                Input(character);
             }
 
-            return Evaluate(current);
+            Input('=');
+
+            return GetCurrentResults();
         }
 
         public void Close()
@@ -75,6 +68,7 @@ namespace Calculater
 
             _controlsMap = new Dictionary<char, Action>
             {
+                {'N', _mainGroup.FindFirstChildrenById("negateButton").Click},
                 {'C', DisplayControls.FindFirstChildrenById("clearButton").Click},
 
                 {'/', StandardOperators.FindFirstChildrenById("divideButton").Click},
@@ -107,20 +101,6 @@ namespace Calculater
             // TODO: Set Standard mode automatically
             // TODO: Check if this value is localizable
             if (!mode.Contains("Standard")) throw new Exception("Mode must be 'Standard'");
-        }
-
-        private double Evaluate(string characters)
-        {
-            Input('C'); // Clear previous operation
-
-            foreach (var character in characters)
-            {
-                Input(character);
-            }
-
-            Input('=');
-
-            return GetCurrentResults();
         }
 
         private void Input(char character)
