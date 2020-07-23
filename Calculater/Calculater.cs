@@ -68,6 +68,7 @@ namespace Calculater
 
             _controlsMap = new Dictionary<char, Action>
             {
+                {'N', _mainGroup.FindFirstChildrenById("negateButton").Click},
                 {'C', DisplayControls.FindFirstChildrenById("clearButton").Click},
 
                 {'/', StandardOperators.FindFirstChildrenById("divideButton").Click},

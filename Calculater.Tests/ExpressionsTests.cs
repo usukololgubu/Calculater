@@ -41,6 +41,8 @@ namespace Calculater.Tests
 
         [TestCase("-0", ExpectedResult = 0)]
         [TestCase("-1", ExpectedResult = -1)]
+        [TestCase("--1", ExpectedResult = 1)]
+        [TestCase("-1-2-3-4-5", ExpectedResult = -15)]
         [TestCase("1*-1", ExpectedResult = -1)]
         [TestCase("-0-1", ExpectedResult = -1)]
         [TestCase("-(1)", ExpectedResult = -1)]

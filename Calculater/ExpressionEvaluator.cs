@@ -27,9 +27,58 @@ namespace Calculater
 
         private T Evaluate<T>(Func<string, T> performBinaryOperation)
         {
-            var expression = PerformOnlySomeOperations(new[] {'*', '/'}, performBinaryOperation);
+            var expression = PerformNegations()
+                .PerformOnlySomeOperations(new[] {'*', '/'}, performBinaryOperation);
 
             return performBinaryOperation(expression.Value);
+        }
+
+        private ExpressionEvaluator PerformNegations()
+        {
+            string ReplaceExtraNegations(string value)
+            {
+                var newValue = "";
+
+                newValue = value.Replace("-", "").Replace("+", "");
+                if (value.Count(c => c == '-') % 2 == 0)
+                {
+                    newValue = newValue == "" ? "+" : newValue;
+                }
+                else
+                {
+                    newValue += "-";
+                }
+
+                return newValue;
+            }
+
+            var result = new List<(string value, bool isDigit)>(_expression);
+            for (var i = 0; i < result.Count; i++)
+            {
+                var current = result[i];
+                if (current.isDigit)
+                {
+                    if (i - 1 >= 0)
+                    {
+                        var previous = result[i - 1];
+                        if (previous.value.Length > 1 && previous.value.Contains('-'))
+                        {
+                            previous.value = previous.value.Replace("-", "");
+                            current.value += 'N';
+                        }
+
+                        result[i - 1] = previous;
+                    }
+                }
+                else
+                {
+                    current.value = ReplaceExtraNegations(current.value);
+                }
+
+                result[i] = current;
+            }
+
+            return new ExpressionEvaluator(result);
         }
 
         private ExpressionEvaluator PerformOnlySomeOperations<T>(char[] operators, Func<string, T> performBinaryOperation)
