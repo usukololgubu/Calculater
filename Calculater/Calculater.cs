@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Runtime.InteropServices;
 using System.Windows.Automation;
 
 namespace Calculater
@@ -22,11 +22,11 @@ namespace Calculater
 
         public Calculater()
         {
-            var calcProcess = System.Diagnostics.Process.Start("calc.exe");
-            if (calcProcess == null) throw new Exception("Cannot start 'calc.exe'");
+            var startCalculator = System.Diagnostics.Process.Start("calc.exe");
+            if (startCalculator == null) throw new Exception("Cannot start 'calc.exe'");
 
-            calcProcess.WaitForInputIdle();
-            Thread.Sleep(500); // wait a bit to be sure that Calculator is started
+            // This process just starts the real calculator process and exits
+            startCalculator.WaitForExit();
 
             Init();
             ValidateMode();
