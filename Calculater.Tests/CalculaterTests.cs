@@ -26,9 +26,9 @@ namespace Calculater.Tests
         {
             var calc = new Calculater();
 
-            var result = calc.Calculate("1234567890");
-            Assert.AreEqual(1234567890, result);
-            
+            var result = calc.Calculate("1234567890N");
+            Assert.AreEqual(-1234567890, result);
+
             calc.Close();
         }
     }
